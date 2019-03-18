@@ -1,0 +1,1 @@
+export const url = 'https://cadabra-note-app.herokuapp.com/api/v1/';

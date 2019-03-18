@@ -1,28 +1,45 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux'
 import './App.css';
+
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+} from 'react-router-dom';
+
+import FormLoginWrapper from './containers/FormLoginWrapper'
+import FormSignUpWrapper from './containers/FormSignUpWrapper'
+import PageUserWrap from './containers/PageUserWrap'
+import PrivateRoute from './containers/private_route';
+
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <BrowserRouter>
+          <Switch>
+            <PrivateRoute exact path="/" component={PageUserWrap} />
+            <Route exact path="/auth/sing-up" component={FormSignUpWrapper} />
+            <Route exact path="/auth/sing-in" component={FormLoginWrapper} />
+          </Switch>
+          
+          
+        </BrowserRouter>
       </div>
     );
   }
 }
 
-export default App;
+//export default App;
+
+
+const AppConnect = connect(
+  
+)(App);
+
+export default AppConnect
+
+
+
