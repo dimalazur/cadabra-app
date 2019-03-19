@@ -3,12 +3,10 @@ import { connect } from 'react-redux'
 import { 
         notesClearSelected, 
         deleteNoteRequest,
-        createNoteSuccess,
         notesToggleShowDescription, 
         notesSortSelect, 
         notesToggleDatePicker, 
         updateNoteRequest,
-        notesToggleArchived,
         getNotesRequest,
         archivedNoteRequest,
         notesSearch,
@@ -21,21 +19,13 @@ import {
         getNotesList, 
         getSelectedNote, 
         getNoteShowItem, 
-        searchTasks,  
       } from '../selectors';
 
 import NotesListWrapper from './NotesListWrapper'
-//import NotesDetailWrapper from './NotesDetailWrapper'
 import PageDescriptionWrapper from './PageDescriptionWrapper'
 
-
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-
-
-import dateImg from '../images/I.svg'
-import newNotesImg from '../images/New.svg'
-import deleteImg from '../images/Can.svg'
+import HeaderControl from '../components/HeaderControl';
+import ListTest from '../components/ListTest';
 
 
 class PageUserWrap extends Component {
@@ -54,11 +44,12 @@ class PageUserWrap extends Component {
     this.changeSortSelect = this.changeSortSelect.bind(this);
     this.searchSubmit = this.searchSubmit.bind(this);
     this.userLogoutClick = this.userLogoutClick.bind(this);
+    this.onDeleteNote = this.onDeleteNote.bind(this);
 
   }
 
   componentDidMount(){
-    const { onGetNotesRequest,state } = this.props;  
+    const { onGetNotesRequest } = this.props;  
     onGetNotesRequest( );
   }
 
@@ -77,7 +68,7 @@ class PageUserWrap extends Component {
   }
 
   changeSortSelect(e) {
-    let { onNotesSortSelect, state } = this.props;
+    let { onNotesSortSelect } = this.props;
     this.setState({
       tech: e.target.value
     });
@@ -93,13 +84,17 @@ class PageUserWrap extends Component {
   }*/
 
   toggleChangeArchived(event)  {
-    let { onNotesToggleArchived, onArchivedNoteRequest, state, notesDescriptionSelect } = this.props;
+    let { 
+      onArchivedNoteRequest, 
+      isCheckedArchiver, 
+      notesDescriptionSelect 
+    } = this.props;
     // isCheckedArchiver
     //checked={this.props.state.notes.isCheckedArchiver}
-    let isCheckedArchiver = !state.notes.isCheckedArchiver;
+   // let isCheckedArchiver = !isCheckedArchiver;
 
     let obj = {
-      archived: isCheckedArchiver,
+      archived: !isCheckedArchiver,
       id: notesDescriptionSelect,
     }
 
@@ -116,7 +111,7 @@ class PageUserWrap extends Component {
     console.log('searchSubmit');
     console.log(search);
 
-    if( search.trim() || search == ''){
+    if( search.trim() || search === ''){
       onNotesSearch(search.trim());
     }
 
@@ -133,18 +128,38 @@ class PageUserWrap extends Component {
   }
 
 
+  onDeleteNote(){
+
+    const  { 
+      onDeleteNoteRequest, 
+      onNotesClearSelected, 
+      onNotesToggleDatePicker, 
+      notesDescriptionSelect 
+    } = this.props;
+
+    if (notesDescriptionSelect){
+      onDeleteNoteRequest(notesDescriptionSelect); 
+      onNotesClearSelected(); 
+      onNotesToggleDatePicker(); 
+    }
+
+  }
+
+  onDrop(data) {
+      console.log(data)
+      // => banana 
+  }
+
+
 
   render() {
     
     const { 
         state,
         onNotesClearSelected, 
-        onDeleteNoteRequest, 
         onNotesToggleDatePicker, 
         notesDescriptionSelect, 
-        onCreateNoteSuccess, 
         onNotesToggleShowDescription,
-        onNotesToggleArchived,
 
         onNotesSetArchivedCheckbox,
         onNotesSetDescription,
@@ -176,76 +191,21 @@ class PageUserWrap extends Component {
             </div>
           </div>
 
-          <div className="sub-header">
-            <div className="wrap">
+          <HeaderControl 
+            changeSortSelect={ this.changeSortSelect } 
+            selectValue={ tech } 
+            heandlerSearchSubmit={ this.searchSubmit } 
+            fieldSearchRef={ this.searchRef }
+            heandlerCreateNote={ () => { onNotesClearSelected(); onNotesToggleShowDescription(false);} }
+            heandlerChangeDatePicker={ this.changeDatePicker }  
+            isDisabledDatePicker={disabledDatePicker}
+            heandlerDeleteNote={ this.onDeleteNote }
+            isCheckedArchiver={ isCheckedArchiver } 
+            heandlerToggleArchived={ this.toggleChangeArchived }
+          />
 
-              <div className="sort-drop-down block-sub-header"> 
-                <select onChange={ this.changeSortSelect } value={ tech }>
-                  <option value = "all" >All</option>
-                  <option value = "Active" >Active</option>
-                  <option value = "Archived" >Archived</option>
-                </select>
-              </div>
-
-              <div className="search-holder block-sub-header">
-                <div className="search-block">
-                  <button className="search-btn" onClick={ this.searchSubmit } ></button>
-                  <input type="text" ref={ this.searchRef } onChange={ this.searchSubmit } name="search" className="search-field" placeholder="Search" />
-                </div>
-              </div>
-              <div className="new-notes-holder block-sub-header" >
-                <div className="icon-holder">
-                  <img src={newNotesImg}/>
-                </div>
-                <button 
-                  type="submit" 
-                  className="btn" 
-                  onClick={ 
-                    () => { 
-                      onNotesClearSelected(); 
-                      onNotesToggleShowDescription(false); 
-                    } 
-                  }>New notes</button>
-              </div>
-              <div className="due-date block-sub-header" >
-                <div className="icon-holder">
-                  <img src={dateImg}/>
-                </div>
-                <DatePicker
-                  selected={this.state.startDate}
-                  onChange={ this.changeDatePicker }
-                  dateFormat="dd.MM.yy"
-                  placeholderText="Due Date"
-                  disabled={disabledDatePicker}
-                />
-              </div>
-              <div className="note-delete block-sub-header" >
-                <div className="icon-holder">
-                  <img src={deleteImg}/>
-                </div>
-                <button 
-                  type="submit" 
-                  className="btn btn-subheader" 
-                  onClick={ 
-                    () => { 
-                      onDeleteNoteRequest(notesDescriptionSelect); 
-                      onNotesClearSelected(); 
-                      onNotesToggleDatePicker(); 
-                    } 
-                  }>Delete</button>
-              </div>
-              <div className="checkbox-holder block-sub-header" >
-                <label className="checkbox">
-                  <input type="checkbox" 
-                    checked={ isCheckedArchiver }
-                    onChange={this.toggleChangeArchived}
-                  />
-                  <div className="checkbox__text">Archive</div>
-                </label>
-              </div>
-            </div>
-          </div>
-
+   
+            {/*<ListTest  /> */}
           <div className="content-page">
             <div className="wrap">
               <div className="sidebar">
@@ -313,9 +273,6 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteNoteRequest: (id) => {
       dispatch(deleteNoteRequest(id))
     },
-    onCreateNoteSuccess: (newNotes) => {
-      dispatch(createNoteSuccess(newNotes))
-    },
     onNotesToggleShowDescription: (payload) => {
       dispatch(notesToggleShowDescription(payload))
     },
@@ -327,9 +284,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdateNoteRequest: (newDate) => {
       dispatch(updateNoteRequest(newDate))
-    },
-    onNotesToggleArchived: () => {
-      dispatch(notesToggleArchived())
     },
     onArchivedNoteRequest: (payload) => {
       dispatch(archivedNoteRequest(payload))

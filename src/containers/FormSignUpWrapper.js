@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-
-import { withRouter, Link  } from 'react-router-dom';
-import { compose } from 'redux';
-
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 import FormField from '../components/FormField'
 import {signUpRequest} from '../actions/actions'
-import {authApi} from '../API'
-import {authSaga} from '../sagas'
 
 
 class FormSignUpWrapper extends Component {
@@ -22,19 +17,19 @@ class FormSignUpWrapper extends Component {
   }
 
   heandler(){
-   const { history, dispatch } = this.props;
-    var name = this.nameRef.value,
-        email = this.emailRef.current.value,
-        password = this.passwordRef.current.value,
-        confirm = this.confirmRef.current.value;
-        var obj = {
+   const { history, onSignUnRequest } = this.props;
+    let name = this.nameRef.value;
+    let email = this.emailRef.current.value;
+    let password = this.passwordRef.current.value;
+    let confirm = this.confirmRef.current.value;
+   // dispatch({type: 'SIGN_UP_REQUEST', payload: obj });
+    onSignUnRequest({
           name,
           email,
           password,
           confirm,
           history
-        }
-    dispatch({type: 'SIGN_UP_REQUEST', payload: obj })
+        });
 
   }
 
@@ -46,7 +41,7 @@ class FormSignUpWrapper extends Component {
           <h1 className="page-title" >Sign Up</h1>
         </header>
         <div className="form-holder FormSignUpWrapper">
-        	<form action="/" className="form form-signup" onClick={this.heandler.bind(this)} >
+        	<form action="/" className="form form-signup" onSubmit={this.heandler.bind(this)} >
 
               <div className="form-field">
                 <FormField id='nameSignUp' fieldRef={el => this.nameRef = el} type='text' name='name' placeholder='Name' />
@@ -68,26 +63,18 @@ class FormSignUpWrapper extends Component {
 }
 
 
-/*const mapDispatchToProps = (dispatch) => {
+
+const mapDispatchToProps = (dispatch) => {
   return {
-
-    onSignUpRequest: () => {
-      dispatch(signUpRequest())
-    },
-   
+    onSignInRequest: (payload) => {
+      dispatch(signUpRequest(payload))
+    }
   }
-}*/
+}
 
-export default connect(
-  
-  
+const FormSignUpWrapperConnect = connect(
+  null,
+  mapDispatchToProps
 )(FormSignUpWrapper);
 
-
-/*export default compose(
- 
-  connect(
-    
-  ),
-  withRouter,
-)(FormSignUpWrapper);*/
+export default FormSignUpWrapperConnect;

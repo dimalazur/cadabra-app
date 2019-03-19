@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import { withRouter, Link  } from 'react-router-dom';
-import { compose } from 'redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import FormField from '../components/FormField'
 import { signInRequest } from '../actions/actions'
@@ -18,16 +17,13 @@ class FormLoginWrapper extends Component {
 
   heandler(event){
     event.preventDefault();
-   const { history } = this.props;
-    var email = this.emailRef.value,
-        password = this.passwordRef.value;
-        var obj = {
-          email,
-          password,
-          history
-        }
-    const { dispatch } = this.props;
-    dispatch({type: 'SIGN_IN_REQUEST', payload: obj })
+   const { history, onSignInRequest } = this.props;
+    const email = this.emailRef.value;
+     const password = this.passwordRef.value;
+
+    //const { dispatch } = this.props;
+   // dispatch({type: 'SIGN_IN_REQUEST', payload: obj })
+   onSignInRequest({email, password, history});
 
   }
 
@@ -41,7 +37,7 @@ class FormLoginWrapper extends Component {
           <h1 className="page-title" >Sign In</h1>
         </header>
         <div className="form-holder FormLoginWrapper">
-        	<form action="/" className="form form-login"  onClick={this.heandler.bind(this)} >
+        	<form action="/" className="form form-login"  onSubmit={this.heandler.bind(this)} >
               <div className="searchForm-field">
                 <FormField id='emailLogin' fieldRef={el => this.emailRef = el} type='email' name='e-mail' placeholder='E-Mail' />
                 <FormField id='passwordLogin' fieldRef={el => this.passwordRef = el} type='password' name='password' placeholder='Password' />
@@ -59,25 +55,19 @@ class FormLoginWrapper extends Component {
 }
 
 
-/*const mapDispatchToProps = (dispatch) => {
+
+
+const mapDispatchToProps = (dispatch) => {
   return {
-
-
-    onSignUpRequest: () => {
-      dispatch(signInRequest())
-    },
+    onSignInRequest: (payload) => {
+      dispatch(signInRequest(payload))
+    }
   }
-}*/
+}
 
-export default connect(
-
+const FormLoginWrapperConnect = connect(
+  null,
+  mapDispatchToProps
 )(FormLoginWrapper);
 
-
-/*export default compose(
- 
-  connect(
-    
-  ),
-  withRouter,
-)(FormLoginWrapper);*/
+export default FormLoginWrapperConnect;

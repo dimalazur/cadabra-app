@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NotesDescription from '../components/NotesDescription';
 
-import { getSelectedNote, getNoteShowItem } from '../selectors'
-import FormField from '../components/FormField';
+import FormAddNote from '../components/FormAddNote';
+
 
 /*import { notesAdd } from '../actions'*/
 
@@ -54,24 +54,11 @@ class PageDescriptionWrapper extends Component {
 
   render() {
    
-    const {pageShowDescriptionNotes,notesDescriptionSelect, noteShowItem,state} = this.props;
-
-    /*
-    let notesListrender = (searchTerm === null) ? notesList : searchTerm;
-    
-    return (
-      <div className="NotesListWrapper" >
-        <NotesList 
-         notesList = {notesListrender} 
-          notesDescriptionSelect = {notesDescriptionSelect} 
-          onNotesSetDescription = {onNotesSetDescription}
-          onNotesToggleShowDescription = {onNotesToggleShowDescription}
-          onNotesToggleDatePicker = {onNotesToggleDatePicker}
-          onNotesSetArchivedCheckbox = {onNotesSetArchivedCheckbox}
-        />
-      </div>
-    );
-    */
+    const {
+      pageShowDescriptionNotes, 
+      notesDescriptionSelect, 
+      noteShowItem 
+    } = this.props;
 
     return (
         <div className="PageDescriptionWrapper">{
@@ -84,26 +71,11 @@ class PageDescriptionWrapper extends Component {
               <NotesDescription  notesDescriptionSelect={notesDescriptionSelect} note={noteShowItem} />
             </div>
           : 
-            <form action="/" className="form form-signup" onSubmit={this.handleSubmit}>
-              <div className="form-field">
-                <FormField 
-                  fieldRef={el => this.titleRef = el}
-                  id='titleNewNote' 
-                  type='text' 
-                  name='titleNote' 
-                  placeholder='Title' 
-                />
-                <FormField 
-                  fieldRef={el => this.textRef = el}
-                  id='detailsNewNote' 
-                  type='text'  
-                  name='detailsNote' 
-                  placeholder='Details' 
-                  
-                />
-                <button type="submit" className="btn btn-primary">Button add</button>
-              </div>
-            </form>
+            <FormAddNote 
+              handleSubmitForm={this.handleSubmit} 
+              fieldTitleRef={el => this.titleRef = el} 
+              fieldTextRef={el => this.textRef = el} 
+            />
 
         }</div>
       )

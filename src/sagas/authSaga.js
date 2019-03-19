@@ -94,7 +94,6 @@ function* signInUser(actions) {
       'uid': res.headers.uid,
       'expiry': res.headers.expiry,
       'client': res.headers.client
-
     }
 
     localStorage.setItem('userLogin', JSON.stringify(userLogin) );

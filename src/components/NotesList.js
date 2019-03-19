@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import NotesListItem from './NotesListItem'
-import classNames from 'classnames'
+import classNames from 'classnames';
 
 class NotesList extends Component {
   
   render() {
 
-  	const {  notesList,onNotesSetDescription, notesDescriptionSelect, onNotesToggleShowDescription, onNotesToggleDatePicker, onNotesSetArchivedCheckbox } = this.props
-    let cnNotesItem,
-        selectId = ( notesDescriptionSelect !== null ) ? notesDescriptionSelect: '';
-        console.log(notesDescriptionSelect);
+  	const { 
+      notesList,
+      onNotesSetDescription, 
+      notesDescriptionSelect, 
+      onNotesToggleShowDescription, 
+      onNotesToggleDatePicker, 
+      onNotesSetArchivedCheckbox 
+    } = this.props
+
+    let cnNotesItem;
+    let selectId = ( notesDescriptionSelect !== null ) ? notesDescriptionSelect: '';
     return (
       <div className="NotesList">
       	{notesList.map( ( item, index ) => {

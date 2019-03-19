@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import NotesList from '../components/NotesList'
 
-import { 
-          notesSetDescription, 
-          notesToggleShowDescription, 
-          notesToggleDatePicker, 
-          notesSetArchivedCheckbox 
-        } from '../actions/actions'
-
-
 
 class NotesListWrapper extends Component {
   render() {
