@@ -40,6 +40,7 @@ const initialState = {
 
 
 function notes (state = initialState, action)  {
+  console.log(state);
   switch (action.type) {
 
     case CREATE_NOTE_SUCCESS: {
@@ -129,14 +130,14 @@ function notes (state = initialState, action)  {
 
 
     case NOTES_SET_DESCRIPTION: {
-      console.log(state);
+      console.log('NOTES_SET_DESCRIPTION');
+      console.log(action.payload);
       return {
         ...state,
         notesDescriptionSelect: action.payload.id,
-        notesIsActive: action.payload.notes.archived,
-        noteShowItem: action.payload.notes,
+        notesIsActive: action.payload.archived,
+        noteShowItem: action.payload,
       }
-
     }
 
     case NOTES_CLEAR_SELECTED: {
@@ -167,7 +168,6 @@ function notes (state = initialState, action)  {
         }),
         isCheckedArchiver: !state.isCheckedArchiver,
       }
-
     }
 
     case ARCHIVED_NOTE_SUCCESS: {
@@ -179,13 +179,11 @@ function notes (state = initialState, action)  {
           item.archived = archived;
         }
       });
-
       return {
         ...state, 
         notesList: newList,
         isCheckedArchiver: !state.isCheckedArchiver,
       }
-
     }
 
     case NOTES_SET_ARCHIVED_CHECKBOX: {
@@ -193,20 +191,14 @@ function notes (state = initialState, action)  {
         ...state,
         isCheckedArchiver: action.payload
       }
-
     }
 
     case NOTES_SEARCH: {
-      let searchValue = action.payload.toLowerCase();
       return {
         ...state,
-        searchFilter: action.payload.toLowerCase(),
-        searchTerm: state.notesList.filter( (note) => {
-          return ( note.title.toLowerCase().includes(searchValue) || note.text.toLowerCase().includes(searchValue) );
-        })
+        searchTerm: action.payload
       }
     }
-
 
     case NOTES_SORT_SELECT: {
       return {
@@ -227,7 +219,6 @@ function notes (state = initialState, action)  {
           }         
         })
       }
-
     }
 
     case USER_LOGOUT: {

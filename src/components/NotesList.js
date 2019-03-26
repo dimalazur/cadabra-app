@@ -30,7 +30,6 @@ class NotesList extends Component {
       			<NotesListItem 
               cnItem={cnNotesItem}
       				key={item.id}
-              id = {item.id}
       				notes={item}  
       				onNotesSetDescription={ onNotesSetDescription }
               onNotesToggleShowDescription={onNotesToggleShowDescription}

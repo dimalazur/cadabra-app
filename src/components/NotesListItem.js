@@ -5,12 +5,12 @@ import PropTypes from 'prop-types'
 class NotesListItem extends Component {
   
   render() {
-  	const {notes ,cnItem, id, onNotesSetDescription, onNotesToggleShowDescription, onNotesToggleDatePicker, onNotesSetArchivedCheckbox } = this.props;
+  	const {notes ,cnItem, onNotesSetDescription, onNotesToggleShowDescription, onNotesToggleDatePicker, onNotesSetArchivedCheckbox } = this.props;
 
     return (
     	<div className={cnItem} 
           onClick={() => { 
-            onNotesSetDescription({id, notes }); 
+            onNotesSetDescription(notes); 
             onNotesToggleShowDescription(true); 
             onNotesToggleDatePicker(); 
             onNotesSetArchivedCheckbox(notes.archived);

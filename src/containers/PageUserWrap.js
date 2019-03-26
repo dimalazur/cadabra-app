@@ -16,10 +16,12 @@ import {
         createNoteRequest,
       } from '../actions/actions'
 import { 
-        getNotesList, 
+        getNotesLists, 
         getSelectedNote, 
         getNoteShowItem, 
-      } from '../selectors';
+        getNotesListRender,
+        getPageShowDescriptionNotes
+      } from '../selectors/';
 
 import NotesListWrapper from './NotesListWrapper'
 import PageDescriptionWrapper from './PageDescriptionWrapper'
@@ -50,7 +52,7 @@ class PageUserWrap extends Component {
 
   componentDidMount(){
     const { onGetNotesRequest } = this.props;  
-    onGetNotesRequest( );
+    onGetNotesRequest();
   }
 
   changeDatePicker(date) {
@@ -62,7 +64,7 @@ class PageUserWrap extends Component {
         Year = String(date.getUTCFullYear());
       var obj = {
         due_date: Year+'-'+Month+'-'+Day,
-        id: notesDescriptionSelect
+        id: notesDescriptionSelect.id
       }
     onUpdateNoteRequest( obj );
   }
@@ -95,7 +97,7 @@ class PageUserWrap extends Component {
 
     let obj = {
       archived: !isCheckedArchiver,
-      id: notesDescriptionSelect,
+      id: notesDescriptionSelect.id,
     }
 
     onArchivedNoteRequest(obj);
@@ -107,9 +109,7 @@ class PageUserWrap extends Component {
 
    
     const { onNotesSearch } = this.props;
-    var search = this.searchRef.current.value;
-    console.log('searchSubmit');
-    console.log(search);
+    let search = this.searchRef.current.value;
 
     if( search.trim() || search === ''){
       onNotesSearch(search.trim());
@@ -155,7 +155,8 @@ class PageUserWrap extends Component {
   render() {
     
     const { 
-        state,
+        //state,
+        pageShowDescriptionNotes,
         onNotesClearSelected, 
         onNotesToggleDatePicker, 
         notesDescriptionSelect, 
@@ -164,15 +165,16 @@ class PageUserWrap extends Component {
         onNotesSetArchivedCheckbox,
         onNotesSetDescription,
         notesList,
-        searchTerm,
+        //searchTerm,
         onCreateNoteRequest,
         isCheckedArchiver,
         disabledDatePicker,
-        noteShowItem
+        noteShowItem,
+        
       } = this.props;
 
       const { tech } = this.state;
-
+    console.log(this.props.notesDescriptionSelect2);
 
     const userLogin = ( localStorage.getItem('userLogin') ) ? JSON.parse(localStorage.getItem('userLogin') ) : null;
     const userName = ( userLogin ) ? userLogin.uid : 'User name';
@@ -212,7 +214,6 @@ class PageUserWrap extends Component {
                 <NotesListWrapper 
                   notesList={notesList} 
                   notesDescriptionSelect={notesDescriptionSelect}
-                  searchTerm={searchTerm}
                   onNotesSetDescription={onNotesSetDescription}
                   onNotesToggleShowDescription={onNotesToggleShowDescription}
                   onNotesToggleDatePicker={onNotesToggleDatePicker}
@@ -222,11 +223,9 @@ class PageUserWrap extends Component {
               <div className="details-block">
                 <PageDescriptionWrapper 
                   onCreateNoteRequest={onCreateNoteRequest}
-                  
                   notesDescriptionSelect={notesDescriptionSelect}
-                  pageShowDescriptionNotes={state.notes.pageShowDescriptionNotes}
+                  pageShowDescriptionNotes={pageShowDescriptionNotes}
                   noteShowItem={noteShowItem}
-                  state={state}
                 />
               </div>
 
@@ -254,10 +253,10 @@ container => разбиваем по папкам(каждая папка это
 
 const mapStateToProps = (state) => {
   return {
-    state: state,
-    notesList: getNotesList(state),
+    pageShowDescriptionNotes: state.notes.pageShowDescriptionNotes,
+    notesList: getNotesListRender(state),
     notesDescriptionSelect: getSelectedNote(state),
-    searchTerm: state.notes.searchTerm,
+    //searchTerm: state.notes.searchTerm,
     isCheckedArchiver: state.notes.isCheckedArchiver,
     disabledDatePicker: state.notes.disabledDatePicker,
     noteShowItem: getNoteShowItem(state),
@@ -308,6 +307,7 @@ const mapDispatchToProps = (dispatch) => {
     onCreateNoteRequest: (payload) => {
       dispatch(createNoteRequest(payload))
     },
+
   }
 }
 

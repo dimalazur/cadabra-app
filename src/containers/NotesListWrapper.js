@@ -10,14 +10,15 @@ class NotesListWrapper extends Component {
              
             notesList, 
             notesDescriptionSelect, 
-            searchTerm, 
+          /*  searchTerm, */
             onNotesSetDescription, 
             onNotesToggleShowDescription, 
             onNotesToggleDatePicker,
             onNotesSetArchivedCheckbox
           } = this.props
     
-    let notesListrender = (searchTerm === null) ? notesList : searchTerm;
+   // let notesListrender = (searchTerm === null) ? notesList : searchTerm;
+    let notesListrender = notesList;
     
     return (
       <div className="NotesListWrapper" >
@@ -77,10 +78,10 @@ NotesListWrapper.propTypes = {
   onNotesToggleDatePicker: PropTypes.func.isRequired,
   onNotesSetArchivedCheckbox: PropTypes.func.isRequired,
   notesDescriptionSelect: PropTypes.number,
-  searchTerm:PropTypes.oneOfType([
+  /*searchTerm:PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
-  ])
+  ])*/
 
 };
 

@@ -176,7 +176,6 @@ function* archivedNote(actions) {
     archived,
     id
   } = actions.payload;
-
   let headers = JSON.parse(localStorage.getItem('userLogin'));
   
 

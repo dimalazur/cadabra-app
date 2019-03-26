@@ -90,8 +90,7 @@ PageDescriptionWrapper.propTypes = {
   onCreateNoteRequest: PropTypes.func.isRequired,
   pageShowDescriptionNotes: PropTypes.bool,
   notesDescriptionSelect: PropTypes.number,
-  noteShowItem: PropTypes.object,
-  searchTerm:PropTypes.object
+  noteShowItem: PropTypes.object
 };
 
 
