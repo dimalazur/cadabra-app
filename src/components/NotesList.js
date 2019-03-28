@@ -10,14 +10,14 @@ class NotesList extends Component {
   	const { 
       notesList,
       onNotesSetDescription, 
-      notesDescriptionSelect, 
+      notesSelect, 
       onNotesToggleShowDescription, 
       onNotesToggleDatePicker, 
       onNotesSetArchivedCheckbox 
     } = this.props
 
     let cnNotesItem;
-    let selectId = ( notesDescriptionSelect !== null ) ? notesDescriptionSelect: '';
+    let selectId = ( notesSelect !== null ) ? notesSelect.id: '';
     return (
       <div className="NotesList">
       	{notesList.map( ( item, index ) => {
@@ -53,7 +53,7 @@ NotesList.propTypes = {
       id: PropTypes.number,
   }) ),
   
-  notesDescriptionSelect: PropTypes.number,
+  notesSelect: PropTypes.number,
   onNotesSetDescription: PropTypes.func.isRequired,
   onNotesToggleShowDescription: PropTypes.func.isRequired,
   onNotesToggleDatePicker: PropTypes.func.isRequired,

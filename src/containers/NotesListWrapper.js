@@ -9,7 +9,7 @@ class NotesListWrapper extends Component {
     const { 
              
             notesList, 
-            notesDescriptionSelect, 
+            notesSelect, 
           /*  searchTerm, */
             onNotesSetDescription, 
             onNotesToggleShowDescription, 
@@ -24,7 +24,7 @@ class NotesListWrapper extends Component {
       <div className="NotesListWrapper" >
       	<NotesList 
          notesList = {notesListrender} 
-          notesDescriptionSelect = {notesDescriptionSelect} 
+          notesSelect = {notesSelect} 
           onNotesSetDescription = {onNotesSetDescription}
           onNotesToggleShowDescription = {onNotesToggleShowDescription}
           onNotesToggleDatePicker = {onNotesToggleDatePicker}
@@ -39,7 +39,7 @@ class NotesListWrapper extends Component {
 const mapStateToProps = (state) => {
   return {
    notesList: state.notes.notesList,
-   notesDescriptionSelect: state.notes.notesDescriptionSelect,
+   notesSelect: state.notes.notesSelect,
    searchTerm: state.notes.searchTerm,
   }
 }*/
@@ -77,7 +77,7 @@ NotesListWrapper.propTypes = {
   onNotesToggleShowDescription: PropTypes.func.isRequired,
   onNotesToggleDatePicker: PropTypes.func.isRequired,
   onNotesSetArchivedCheckbox: PropTypes.func.isRequired,
-  notesDescriptionSelect: PropTypes.number,
+  notesSelect: PropTypes.number,
   /*searchTerm:PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,

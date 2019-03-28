@@ -14,7 +14,7 @@ class ClientsSearch extends Component {
 
   };
   submitForm(){
-    console.log('submitForm');
+   
   }
 
   render() {

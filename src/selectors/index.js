@@ -42,7 +42,19 @@ const notesSelector = state => state.notes; // путь к редюсеру гд
 
 const getList = state => state.notes.notesList;
 const getSearchTerm = state => state.notes.searchTerm;
-const getNotesDescriptionSelect = state => state.notes.notesDescriptionSelect;
+const getNotesSelect = state => state.notes.notesSelect;
+const pageShowDescriptionNotes = state => state.notes.pageShowDescriptionNotes;
+
+export const getPageShowDescriptionNotes = createSelector(
+  pageShowDescriptionNotes,
+  (pageShowDescriptionNotes) => {
+    if (pageShowDescriptionNotes) {
+      return pageShowDescriptionNotes
+    }
+
+    return null;
+  }
+)
 
 export const getNotesLists = createSelector(
   notesSelector,
@@ -61,11 +73,10 @@ export const getNotesLists = createSelector(
 
 
 export const getSelectedNote = createSelector(
-  [getList, getNotesDescriptionSelect],
+  [getList, getNotesSelect],
   (notesList, id) => {
     if(id !== null){
       let noteSelected;
-      console.log('228');
       notesList.map( (note) =>  {
         if(note.id === id){
           noteSelected = Object.assign({}, note);
@@ -124,44 +135,3 @@ export const getNotesListRender = createSelector(
     return notesList;
   }
 );
-
-
-
-
-//console.log(getNotesListRender());
-
-/*export const getClients = state => state.clientsStore.clients;
-export const getSearchTerm = state => state.clientsStore.searchTerm;
-export const getClientSelectId = state => state.clientsStore.clientSelectId;
-
-export const getSelectedClient = createSelector(
-  [getClients, getClientSelectId],
-  (clients, id) => {
-    const client = clients.filter(item => item.id === id);
-    if (client && client.length === 1) {
-      return client[0];
-    }
-    return null;
-  },
-);
-
-export const getClientsListRender = createSelector(
-  [getClients, getSearchTerm],
-  (clients, searchTerm) => {
-    if (searchTerm !== null) {
-
-      return clients.filter((obj1) => {
-      for (const val1 in obj1) {
-        const obj2 = obj1[val1];
-        for (const val2 in obj2) {
-          if (obj2[val2].toLowerCase().includes(searchTerm.toLowerCase().trim())) {
-            return true;
-          }
-        }
-      }
-      return false;
-    });
-    }
-    return clients;
-  }
-);*/

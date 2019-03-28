@@ -20,7 +20,7 @@ import {
         getSelectedNote, 
         getNoteShowItem, 
         getNotesListRender,
-        getPageShowDescriptionNotes
+        getPageShowDescriptionNotes,
       } from '../selectors/';
 
 import NotesListWrapper from './NotesListWrapper'
@@ -57,39 +57,40 @@ class PageUserWrap extends Component {
 
   changeDatePicker(date) {
 
-    const { onUpdateNoteRequest, notesDescriptionSelect } = this.props;
+    const { onUpdateNoteRequest, notesSelect } = this.props;
    
-    let Day = ( date.getDate() <= 10 ) ? '0'+date.getDate() : date.getDate(),
-        Month = ( (date.getMonth()+1) <= 10 ) ? '0'+(date.getMonth()+1) : (date.getMonth()+1),
-        Year = String(date.getUTCFullYear());
-      var obj = {
-        due_date: Year+'-'+Month+'-'+Day,
-        id: notesDescriptionSelect.id
-      }
+    let Day = ( date.getDate() <= 10 ) ? '0'+date.getDate() : date.getDate();
+    let Month = ( (date.getMonth()+1) <= 10 ) ? '0'+(date.getMonth()+1) : (date.getMonth()+1);
+    let Year = String(date.getUTCFullYear());
+    let obj = {
+      due_date: Year+'-'+Month+'-'+Day,
+      id: notesSelect.id
+    }
     onUpdateNoteRequest( obj );
   }
 
-  changeSortSelect(e) {
+  changeSortSelect(techItem) {
     let { onNotesSortSelect } = this.props;
+    console.log('changeSortSelect');
+    console.log(techItem);
     this.setState({
-      tech: e.target.value
+      tech: techItem
     });
-    onNotesSortSelect(e.target.value);
-
+    onNotesSortSelect(techItem);
   }
 
 
- /* onDeleteNote(e) {
-    let { onDeleteNoteSuccess, notesDescriptionSelect } = this.props;
+  onDeleteNote(e) {
+    let { onDeleteNoteSuccess, notesSelect } = this.props;
     
-    onDeleteNoteSuccess(notesDescriptionSelect);
-  }*/
+    onDeleteNoteSuccess(notesSelect);
+  }
 
   toggleChangeArchived(event)  {
     let { 
       onArchivedNoteRequest, 
       isCheckedArchiver, 
-      notesDescriptionSelect 
+      notesSelect 
     } = this.props;
     // isCheckedArchiver
     //checked={this.props.state.notes.isCheckedArchiver}
@@ -97,7 +98,7 @@ class PageUserWrap extends Component {
 
     let obj = {
       archived: !isCheckedArchiver,
-      id: notesDescriptionSelect.id,
+      id: notesSelect.id,
     }
 
     onArchivedNoteRequest(obj);
@@ -118,13 +119,10 @@ class PageUserWrap extends Component {
   };
 
   userLogoutClick(){
-
     const  { onUserLogout, history } = this.props;
-    console.log('userLogoutClick');
     
     onUserLogout();
     history.push('/auth/sing-in');
-
   }
 
 
@@ -134,20 +132,15 @@ class PageUserWrap extends Component {
       onDeleteNoteRequest, 
       onNotesClearSelected, 
       onNotesToggleDatePicker, 
-      notesDescriptionSelect 
+      notesSelect 
     } = this.props;
 
-    if (notesDescriptionSelect){
-      onDeleteNoteRequest(notesDescriptionSelect); 
+    if (notesSelect){
+      onDeleteNoteRequest(notesSelect); 
       onNotesClearSelected(); 
       onNotesToggleDatePicker(); 
     }
 
-  }
-
-  onDrop(data) {
-      console.log(data)
-      // => banana 
   }
 
 
@@ -159,9 +152,8 @@ class PageUserWrap extends Component {
         pageShowDescriptionNotes,
         onNotesClearSelected, 
         onNotesToggleDatePicker, 
-        notesDescriptionSelect, 
+        notesSelect, 
         onNotesToggleShowDescription,
-
         onNotesSetArchivedCheckbox,
         onNotesSetDescription,
         notesList,
@@ -174,7 +166,7 @@ class PageUserWrap extends Component {
       } = this.props;
 
       const { tech } = this.state;
-    console.log(this.props.notesDescriptionSelect2);
+  
 
     const userLogin = ( localStorage.getItem('userLogin') ) ? JSON.parse(localStorage.getItem('userLogin') ) : null;
     const userName = ( userLogin ) ? userLogin.uid : 'User name';
@@ -213,7 +205,7 @@ class PageUserWrap extends Component {
               <div className="sidebar">
                 <NotesListWrapper 
                   notesList={notesList} 
-                  notesDescriptionSelect={notesDescriptionSelect}
+                  notesSelect={notesSelect}
                   onNotesSetDescription={onNotesSetDescription}
                   onNotesToggleShowDescription={onNotesToggleShowDescription}
                   onNotesToggleDatePicker={onNotesToggleDatePicker}
@@ -223,7 +215,7 @@ class PageUserWrap extends Component {
               <div className="details-block">
                 <PageDescriptionWrapper 
                   onCreateNoteRequest={onCreateNoteRequest}
-                  notesDescriptionSelect={notesDescriptionSelect}
+                  notesSelect={notesSelect}
                   pageShowDescriptionNotes={pageShowDescriptionNotes}
                   noteShowItem={noteShowItem}
                 />
@@ -251,11 +243,16 @@ container => разбиваем по папкам(каждая папка это
 */
 
 
+
+
+
+
+
 const mapStateToProps = (state) => {
   return {
-    pageShowDescriptionNotes: state.notes.pageShowDescriptionNotes,
+    pageShowDescriptionNotes: getPageShowDescriptionNotes(state),
     notesList: getNotesListRender(state),
-    notesDescriptionSelect: getSelectedNote(state),
+    notesSelect: getSelectedNote(state),
     //searchTerm: state.notes.searchTerm,
     isCheckedArchiver: state.notes.isCheckedArchiver,
     disabledDatePicker: state.notes.disabledDatePicker,

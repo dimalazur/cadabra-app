@@ -43,8 +43,7 @@ function* createUser(actions) {
   const success = payload => ({ type: SIGN_UP_SUCCESS, payload });
   const failure = payload => ({ type: SIGN_UP_FAILURE, payload });
 
-  console.log('createUser');
-  console.log(actions.payload);
+
 /*  const { 
     name, 
     email, 
@@ -60,11 +59,7 @@ function* createUser(actions) {
 
   try {
     const res = yield call(authApi.signUp, actions.payload);
-    console.log('res');
-    console.log(res);
     
-    //var accessToken = res.headers['access-token'];
-    //localStorage.setItem('accessToken', accessToken);
     history.push('/auth/sing-in');
 
     yield put(success(res.data));
@@ -77,7 +72,6 @@ function* signInUser(actions) {
   const success = payload => ({ type: SIGN_IN_SUCCESS, payload });
   const failure = payload => ({ type: SIGN_IN_FAILURE, payload });
 
-  console.log('actions', actions);
   const { 
     email, 
     password,
@@ -86,8 +80,6 @@ function* signInUser(actions) {
 
   try {
     const res = yield call(authApi.signIn, email, password);
-    console.log('signInUser');
-    console.log(res);
     
     let userLogin = {
       'access-token': res.headers['access-token'],
@@ -109,24 +101,19 @@ function* createNote(actions) {
   const success = payload => ({ type: CREATE_NOTE_SUCCESS, payload });
   const failure = payload => ({ type: CREATE_NOTE_FAILURE, payload });
 
-  console.log('CREATE_NOTE_SUCCESS');
-  console.log( actions);
 /*  const { 
     title, 
     text,
     archived,
     due_date
   } = actions.payload;
-  console.log(actions.payload);*/
+*/
 
   let headers = JSON.parse(localStorage.getItem('userLogin'));
   
 
   try {
-    const res = yield call(authApi.createNote, actions.payload, headers);
-    console.log('createNote');
-    console.log(res);
-    
+    const res = yield call(authApi.createNote, actions.payload, headers);   
 
     yield put(success(res.data));
   } catch (e) {
@@ -139,8 +126,6 @@ function* updateNote(actions) {
   const success = payload => ({ type: UPDATE_NOTE_SUCCESS, payload });
   const failure = payload => ({ type: UPDATE_NOTE_FAILURE, payload });
 
-  console.log('UPDATE_NOTE_SUCCESS');
-  console.log( actions);
   const { 
     due_date,
     id
@@ -151,8 +136,6 @@ function* updateNote(actions) {
 
   try {
     const res = yield call(authApi.updateNote, due_date, id, headers);
-    console.log('createNote');
-    console.log(res);
     
 
     yield put(success({ 
@@ -170,8 +153,6 @@ function* archivedNote(actions) {
   const success = payload => ({ type: ARCHIVED_NOTE_SUCCESS, payload });
   const failure = payload => ({ type: ARCHIVED_NOTE_FAILURE, payload });
 
-  console.log('ARCHIVED_NOTE_REQUEST');
-  console.log( actions);
   const { 
     archived,
     id
@@ -181,9 +162,6 @@ function* archivedNote(actions) {
 
   try {
     const res = yield call(authApi.archivedNote, archived, id, headers);
-    console.log('createNote');
-    console.log(res);
-    
 
     yield put(success({ 
       archived,
@@ -200,19 +178,12 @@ function* getNotes(actions) {
   const success = payload => ({ type: GET_NOTES_SUCCESS, payload });
   const failure = payload => ({ type: GET_NOTES_FAILURE, payload });
 
-  console.log('getNotes');
-  console.log( actions );
-
-
-
   let headers = JSON.parse(localStorage.getItem('userLogin'));
   
 
   try {
     //const res = yield call(authApi.createNote, title, text, headers);
     const res = yield call(authApi.getNotes, headers);
-    console.log('signInUser');
-    console.log(res);
 
     yield put(success(res.data));
   } catch (e) {
@@ -225,21 +196,15 @@ function* deleteNote(actions) {
   const success = payload => ({ type: DELETE_NOTE_SUCCESS, payload });
   const failure = payload => ({ type: DELETE_NOTE_FAILURE, payload });
 
-  console.log('deleteNote');
-  console.log( actions.payload );
-
-  const id = actions.payload;
+  const id = actions.payload.id;
   let headers = JSON.parse(localStorage.getItem('userLogin'));
-
 
   try {
     const res = yield call(authApi.deleteNote, id, headers);
-    console.log('deleteNote');
-    console.log(res);
+
     
     yield put(success(id));
   } catch (e) {
-    console.log(' DELETE_NOTE_FAILURE');
     yield put(failure(e));
   }
 }

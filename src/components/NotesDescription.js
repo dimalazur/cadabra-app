@@ -6,12 +6,12 @@ class NotesDescription extends Component {
 
 
   render() {
-  	const { notesDescriptionSelect, note } = this.props;
+  	const { notesSelect, note } = this.props;
 		
 	return (
 	    <div>
 
-	      {(notesDescriptionSelect === null) ? (
+	      {(notesSelect === null) ? (
 	        <p>Выберите клиента из списка</p> 
 	      ) : (
 	      		
@@ -35,7 +35,7 @@ NotesDescription.propTypes = {
       title: PropTypes.string,
       text: PropTypes.string,
     }),
-    notesDescriptionSelect: PropTypes.oneOfType([
+    notesSelect: PropTypes.oneOfType([
 		PropTypes.object,
 		PropTypes.number,
 	])

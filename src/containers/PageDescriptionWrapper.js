@@ -17,7 +17,6 @@ class PageDescriptionWrapper extends Component {
   }
 
   /*handleChange = ({ target: { name, value } }) => {
-    console.log('handleChange');
     this.setState({[name]: value});
 
   };*/
@@ -56,7 +55,7 @@ class PageDescriptionWrapper extends Component {
    
     const {
       pageShowDescriptionNotes, 
-      notesDescriptionSelect, 
+      notesSelect, 
       noteShowItem 
     } = this.props;
 
@@ -64,11 +63,11 @@ class PageDescriptionWrapper extends Component {
         <div className="PageDescriptionWrapper">{
           (pageShowDescriptionNotes) ? 
             /*<NotesDetailWrapper  
-              notesDescriptionSelect={notesDescriptionSelect} 
+              notesSelect={notesSelect} 
               note={noteShowItem} 
             />*/
             <div className="NotesDescriptionWrapper">
-              <NotesDescription  notesDescriptionSelect={notesDescriptionSelect} note={noteShowItem} />
+              <NotesDescription  notesSelect={notesSelect} note={noteShowItem} />
             </div>
           : 
             <FormAddNote 
@@ -89,7 +88,7 @@ class PageDescriptionWrapper extends Component {
 PageDescriptionWrapper.propTypes = {
   onCreateNoteRequest: PropTypes.func.isRequired,
   pageShowDescriptionNotes: PropTypes.bool,
-  notesDescriptionSelect: PropTypes.number,
+  notesSelect: PropTypes.number,
   noteShowItem: PropTypes.object
 };
 

@@ -26,7 +26,7 @@ import {
 
 const initialState = {
   notesList: [],
-  notesDescriptionSelect: null,
+  notesSelect: null,
   notesIsActive: null,
   searchTerm: null,
   pageShowDescriptionNotes: true,
@@ -40,13 +40,11 @@ const initialState = {
 
 
 function notes (state = initialState, action)  {
-  console.log(state);
   switch (action.type) {
 
     case CREATE_NOTE_SUCCESS: {
       let date = (action.payload.due_date).split('-').reverse();
       date[2] = date[2].slice(-2);
-
 
       return {
         ...state,
@@ -86,8 +84,6 @@ function notes (state = initialState, action)  {
     }
 
     case GET_NOTES_SUCCESS: {
-      console.log('GET_NOTES_SUCCESS');
-      console.log(action.payload);
       action.payload.forEach(function(item){
         if(item.due_date){
           let date = item.due_date.split('-').reverse();
@@ -111,12 +107,9 @@ function notes (state = initialState, action)  {
         return value.id !== action.payload;
       }
 
-      let notesList = [...state.notesList];
-      let newList = notesList.filter(isFilterById);
-
       return {
         ...state,
-        notesList: newList,
+        notesList: [...state.notesList.filter(isFilterById)],
       }
      
     }
@@ -128,13 +121,10 @@ function notes (state = initialState, action)  {
       }
     }
 
-
     case NOTES_SET_DESCRIPTION: {
-      console.log('NOTES_SET_DESCRIPTION');
-      console.log(action.payload);
       return {
         ...state,
-        notesDescriptionSelect: action.payload.id,
+        notesSelect: action.payload.id,
         notesIsActive: action.payload.archived,
         noteShowItem: action.payload,
       }
@@ -144,36 +134,21 @@ function notes (state = initialState, action)  {
       return {
         ...state,
         disabledDatePicker: true,
-        notesDescriptionSelect: null
+        notesSelect: null
       }
     }
 
     case NOTES_TOGGLE_DATE_PICKER: {
       return {
         ...state,
-        disabledDatePicker: !state.notesDescriptionSelect
-      }
-    }
-
-    case NOTES_TOGGLE_ARCHIVED: {
-      return {
-        ...state, 
-        notesList: state['notesList'].map((item, index) => {
-
-            if (state.notesDescriptionSelect === item.id) {
-              item.isArchived = !item.isArchived;
-            }
-          return item;
-
-        }),
-        isCheckedArchiver: !state.isCheckedArchiver,
+        disabledDatePicker: !state.notesSelect
       }
     }
 
     case ARCHIVED_NOTE_SUCCESS: {
       const { archived, id } = action.payload;
 
-      var newList = [...state.notesList];
+      let newList = [...state.notesList];
       newList.forEach((item, index) => {
         if (id === item.id) {
           item.archived = archived;
@@ -228,18 +203,14 @@ function notes (state = initialState, action)  {
       }
     }
    
-
     default: {
       return state;
     }
   }
 };
 
-
-
 const clientsReducers = combineReducers({
   notes,
 })
 
-export default clientsReducers
-
+export default clientsReducers;
